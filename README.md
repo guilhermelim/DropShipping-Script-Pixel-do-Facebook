@@ -1,4 +1,4 @@
-# DropShipping-Script-Pixel-Facebook
+# Dropshipping-Script-Pixel-Facebook
 Script para o evento de Purchase no Facebook Pixel.
 
 ### Instalação
