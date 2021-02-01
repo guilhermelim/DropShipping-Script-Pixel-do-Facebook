@@ -18,5 +18,5 @@ Script para o evento de Purchase no Facebook Pixel.
         currency: 'USD',
     });
     console.log("O pixel de PURCHASE foi ativado com sucesso para o content ID: " + productId);
-})();
+    })();
    ```
