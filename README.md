@@ -29,8 +29,8 @@ Script para o evento de Purchase no Facebook Pixel.
    })();
    ```
 3. Versão desatualizada mostrada no video
-```JS
-javascript: (function() {
+   ```JS
+   javascript: (function() {
     var codigo = document.getElementById("ProductJson-product-template");
     if (codigo == undefined) {
         content_id = meta["product"]["id"];
@@ -45,5 +45,5 @@ javascript: (function() {
         currency: 'USD',
     });
     console.log("O pixel de PUR foi ativado com sucesso para o content ID: " + content_id);
-})();
-```
+   })();
+   ```
