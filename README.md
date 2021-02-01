@@ -6,7 +6,7 @@ Script para o evento de Purchase no Facebook Pixel.
 1. Conpie e cole o `script.js` para desparar eventos Purchase automaticamente.
    ```JS
    javascript: (function() {
-		   var productTable = document.querySelector('.product-table .product');
+	   var productTable = document.querySelector('.product-table .product');
 	   var productId = productTable.getAttribute('data-product-id');
 	   var productValue = productTable.querySelector('.product__price span').innerText.replace("$", "");
     
