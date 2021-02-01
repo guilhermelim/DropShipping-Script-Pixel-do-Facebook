@@ -10,16 +10,21 @@ Script para o evento de Purchase no Facebook Pixel.
    ```JS
    javascript: (function() {
     var productTable = document.querySelector('.product-table .product');
-    var productId = productTable.getAttribute('data-product-id');
-    var productValue = productTable.querySelector('.product__price span').innerText.replace("$", "");
+    if (productTable != undefined) {
+        var productId = productTable.getAttribute('data-product-id');
+        var productValue = productTable.querySelector('.product__price span').innerText.replace("$", "");
 
-    fbq('track', 'Purchase', {
-        content_type: 'product_group',
-        content_ids: '[' + productId + ']',
-        value: productValue,
-        num_items: 1,
-        currency: 'USD',
-    });
-    console.log("O pixel de PURCHASE foi ativado com sucesso para o content ID: " + productId);
-    })();
+        fbq('track', 'Purchase', {
+            content_type: 'product_group',
+            content_ids: '[' + productId + ']',
+            value: productValue,
+            num_items: 1,
+            currency: 'USD',
+        });
+
+        alert("SUCESSO: O pixel de PURCHASE foi ativado com sucesso para o content ID: " + productId + ".");
+    } else {
+        alert("ERRO: Não foi possivel enviar o pixel de PURCHASE.");
+    }
+   })();
    ```
