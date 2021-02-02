@@ -7,6 +7,63 @@ Script para o evento de Purchase no Facebook Pixel.
 [![Watch the video](https://img.youtube.com/vi/cGlBWhMFkV8/hqdefault.jpg)](https://youtu.be/cGlBWhMFkV8)
 
 2. Conpie e cole o `script.js` para desparar eventos Purchase automaticamente.
+
+   ```JS
+   javascript: (function() {
+
+    var str;
+    function procurarAtributo(keyWord) {
+        var keyEncontrada = false;
+        var valueReturn;
+
+        const regex = /(?:\"|\')(?<key>[^"]*)(?:\"|\')(?=:)(?:\:\s*)(?:\"|\')?(?<value>true|false|[0-9a-zA-Z\+\-\,\.\$]*)/gm;
+        let m;
+
+        while ((m = regex.exec(str)) !== null) {
+            // Isso é necessário para evitar loops infinitos com correspondências de largura zero
+            if (m.index === regex.lastIndex) {
+                regex.lastIndex++;
+            }
+
+            // O resultado pode ser acessado através da variável 'm'.
+            m.forEach((match, groupIndex) => {
+                //console.log(`Correspondência encontrada, grupo ${groupIndex}: ${match}`);
+                if (groupIndex == 1 && match == keyWord) {
+                    keyEncontrada = true;
+                }
+                if (keyEncontrada == true && groupIndex == 2) {
+                    keyEncontrada = false;
+                    valueReturn = match;
+                }
+
+            });
+        }
+        return valueReturn;
+    }
+
+    var analyticsText = document.querySelector('.analytics');
+    if (analyticsText != undefined) {
+        str = analyticsText.text;
+        var productId = procurarAtributo('productId').replace(",", "");
+        var productValue = procurarAtributo('revenue').replace(",", "");
+
+        fbq('track', 'Purchase', {
+            content_type: 'product_group',
+            content_ids: '[' + productId + ']',
+            value: productValue,
+            num_items: 1,
+            currency: 'USD',
+        });
+
+        console.log(`SUCESSO: O pixel de PURCHASE foi enviado com sucesso.\nProdutoId: ${productId} \nValue: ${productValue}`);
+        alert("SUCESSO: O pixel de PURCHASE foi enviado com sucesso para o content ID: " + productId + ".");
+    } else {
+        alert("ERRO: Não foi possivel enviar o pixel de PURCHASE.");
+    }
+
+   })();
+   ```
+3. Versão desatualizada
    ```JS
    javascript: (function() {
     var productTable = document.querySelector('.product-table .product');
@@ -26,24 +83,5 @@ Script para o evento de Purchase no Facebook Pixel.
     } else {
         alert("ERRO: Não foi possivel enviar o pixel de PURCHASE.");
     }
-   })();
-   ```
-3. Versão desatualizada mostrada no video
-   ```JS
-   javascript: (function() {
-    var codigo = document.getElementById("ProductJson-product-template");
-    if (codigo == undefined) {
-        content_id = meta["product"]["id"];
-    } else {
-        var content_id = JSON.parse(codigo.text)["id"].toString();
-    }
-    fbq('track', 'Purchase', {
-        content_type: 'product_group',
-        content_ids: '[' + content_id + ']',
-        value: 99.00,
-        num_items: 1,
-        currency: 'USD',
-    });
-    console.log("O pixel de PUR foi ativado com sucesso para o content ID: " + content_id);
    })();
    ```
