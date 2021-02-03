@@ -9,10 +9,10 @@ Script para o evento de Purchase no Facebook Pixel.
 2. Conpie e cole o `script.js` para desparar eventos Purchase automaticamente.
 
    ```JS
-   javascript: (function() {
+   javascript: (function () {
 
-    var str;
-    function procurarAtributo(keyWord) {
+    function procurarAtributo(keyWord, text) {
+        var str = text;
         var keyEncontrada = false;
         var valueReturn;
 
@@ -41,26 +41,30 @@ Script para o evento de Purchase no Facebook Pixel.
         return valueReturn;
     }
 
-    var analyticsText = document.querySelector('.analytics');
-    if (analyticsText != undefined) {
-        str = analyticsText.text;
-        var productId = procurarAtributo('productId').replace(",", "");
-        var productValue = procurarAtributo('revenue').replace(",", "");
+    function injetarPurchase() {
+        var analyticsText = document.querySelector('.analytics');
+        if (analyticsText != undefined) {
+            var productId = procurarAtributo('productId', analyticsText.text).replace(",", "");
+            var productValue = procurarAtributo('revenue', analyticsText.text).replace(",", "");
 
-        fbq('track', 'Purchase', {
-            content_type: 'product_group',
-            content_ids: '[' + productId + ']',
-            value: productValue,
-            num_items: 1,
-            currency: 'USD',
-        });
+            console.log("ID: " + productId);
 
-        console.log(`SUCESSO: O pixel de PURCHASE foi enviado com sucesso.\nProdutoId: ${productId} \nValue: ${productValue}`);
-        alert("SUCESSO: O pixel de PURCHASE foi enviado com sucesso para o content ID: " + productId + ".");
-    } else {
-        alert("ERRO: Não foi possivel enviar o pixel de PURCHASE.");
+            fbq('track', 'Purchase', {
+                content_type: 'product_group',
+                content_ids: '[' + productId + ']',
+                value: productValue,
+                num_items: 1,
+                currency: 'USD',
+            });
+
+            console.log(`SUCESSO: O pixel de PURCHASE foi enviado com sucesso.\nProdutoId: ${productId} \nValue: ${productValue}`);
+            alert("SUCESSO: O pixel de PURCHASE foi enviado com sucesso para o content ID: " + productId + ".");
+        } else {
+            alert("ERRO: Não foi possivel enviar o pixel de PURCHASE.");
+        }
     }
 
+    injetarPurchase();
    })();
    ```
 3. Versão desatualizada
